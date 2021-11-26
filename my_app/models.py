@@ -6,30 +6,36 @@ from datetime import datetime
 from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 
-
-class User(db.Model, UserMixin):
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(50), nullable=False)
-    active = Column(Boolean, default=True)
-    join_date = Column(DateTime, default=datetime.now())
-    username = Column(String(50), nullable=False, unique=True)
-    password = Column(String(100), nullable=False)
-
-    def __str__(self):
-        return self.name
-
-
-
-
-class LopHoc(db.Model):
-    __tablename__ = "LopHoc"
-    MaLopHoc = Column(Integer, primary_key=True, autoincrement=True)
-    TenLop = Column(NVARCHAR(50), nullable=False)
-    SiSo = Column(Integer, nullable=False)
-    hocSinh = relationship('HocSinh', backref="Lớp học", lazy=True)
+"""
+class GiaoVien(db.Model):
+    __tablename__ = "GiaoVien"
+    MaGiaoVien = Column(Integer, primary_key=True, autoincrement=True)
+    TenGiaoVien = Column(NVARCHAR(50), nullable=False)
+    GioiTinh = Column(NVARCHAR(50), nullable=False)
+    Tuoi = Column(Integer, nullable=False)
+    Email = Column(String(50), nullable=True)
+    SDT = Column(String(50), nullable=False)
+    MatKhau = Column(String(50), nullable=False)
+    Quyen = Column(NCHAR(10), nullable=False)
+    phanCong = relationship('PhanCong', backref='Giáo Viên', lazy=True)
 
     def __str__(self):
-        return self.TenLop
+        return self.TenGiaoVien
+
+
+class HocKy(db.Model):
+    __tablename__ = "HocKy"
+    MaHocKy = Column(Integer, primary_key=True, autoincrement=True)
+    TenHocKy = Column(NVARCHAR(50), nullable=False)
+    NamHoc = Column(NVARCHAR(50), nullable=False)
+    NgayBatDau = Column(DateTime, nullable=False)
+    NgayKetThuc = Column(DateTime, nullable=False)
+    phanCong = relationship('PhanCong', backref='Học Kỳ', lazy=True)
+    chiTietHocSinh = relationship('ChiTietHocSinh', backref='Học Kỳ', lazy=True)
+
+    def __str__(self):
+        return self.TenHocKy
+"""
 
 
 class HocSinh(db.Model):
@@ -43,9 +49,35 @@ class HocSinh(db.Model):
     Anh = Column(NVARCHAR(50), nullable=False)
     diemMonHocHocSinh = relationship('DiemMonHocHocSinh', backref='Học sinh', lazy=True)
     diaChi = relationship('DiaChiHS', backref='Học Sinh', lazy=True)
+    taiKhoan = relationship('TaiKhoan', backref='Học sinh', lazy=True)
+    lopHoc = relationship('LopHoc', backref='Học sinh', lazy=True)
 
     def __str__(self):
         return self.TenHocSinh
+
+
+class LopHoc(db.Model):
+    __tablename__ = "LopHoc"
+    MaLopHoc = Column(Integer, primary_key=True, autoincrement=True)
+    TenLop = Column(NVARCHAR(50), nullable=False)
+    SiSo = Column(Integer, nullable=False)
+    maHocSinh = Column(Integer, ForeignKey(HocSinh.MaHocSinh), nullable=False)
+
+    def __str__(self):
+        return self.TenLop
+
+
+class TaiKhoan(db.Model, UserMixin):
+    __tablename__ = "TaiKhoan"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    active = Column(Boolean, default=True)
+    username = Column(String(50), nullable=False, unique=True)
+    password = Column(String(100), nullable=False)
+    roles = Column(Integer, nullable=False)  # 1: Admin
+    maHocSinh = Column(Integer, ForeignKey(HocSinh.MaHocSinh), nullable=False)
+
+    def __str__(self):
+        return self.username
 
 
 class DiaChiHS(db.Model):
@@ -91,7 +123,18 @@ class DiemMonHocHocSinh(db.Model):
         return "Điểm của học sinh: " + HocSinh.query.get(self.maHocSinh).TenHocSinh
 
 
+"""
+class PhanCong(db.Model):
+    __tablename__ = "PhanCong"
+    maGiaoVien = Column(Integer, ForeignKey(GiaoVien.MaGiaoVien), nullable=False)
+    maLopHoc = Column(Integer, ForeignKey(LopHoc.MaLopHoc), nullable=False)
+    maHocKy = Column(Integer, ForeignKey(HocKy.MaHocKy), nullable=False)
+    maMonnHoc = Column(Integer, ForeignKey(MonHoc.MaMonHoc), nullable=False)
+    db.PrimaryKeyConstraint(maGiaoVien, maLopHoc, maMonnHoc, maHocKy)
 
+    def __str__(self):
+        return "Lớp: " + LopHoc.query.get(self.maLopHoc).TenLop + "-Môn: " + MonHoc.query.get(self.maMonnHoc).TenMonHoc + ". "
+"""
 
 if __name__ == '__main__':
     db.create_all()
