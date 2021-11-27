@@ -16,6 +16,10 @@ body{
 
 }
 
+.portlet-body{
+    padding: 10px;
+}
+
 .portlet.box.blue > .portlet-title > .caption{
     padding: 11px 0 9px 0;
     display: inline-block;
@@ -62,4 +66,15 @@ label{
     color: #333;
     border: none;
     border-radius: 0;
+}
+
+.table-toolbar{
+    margin-bottom: 15px;
+}
+
+.btn.green{
+    background-color: #35aa47;
+    color: white;
+    border: none;
+    border-radius: 0px;
 }
