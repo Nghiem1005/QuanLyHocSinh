@@ -13,3 +13,6 @@ def get_Allhocsinh(malop=None):
     if malop:
         hocsinhs = hocsinhs.join(LopHoc, HocSinh.MaHocSinh==LopHoc.MaLopHoc).filter(LopHoc.TenLop.contains(malop))
     return hocsinhs.all()
+
+def add_diem():
+    if

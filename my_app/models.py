@@ -38,6 +38,25 @@ class HocSinh(db.Model):
         return self.TenHocSinh
 
 
+class HocKy(db.Model):
+    __tablename__ = "HocKy"
+    MaHocKy = Column(Integer, primary_key=True, autoincrement=True)
+    TenHocKy = Column(Integer, nullable=False)
+
+    def __str__(self):
+        return self.TenHocKy
+
+
+class HocSinhLopHoc(db.Model):
+    __tablename__ = "DiemMonHocHocSinh"
+    maHocSinh = Column(Integer, ForeignKey(HocSinh.MaHocSinh), nullable=False)
+    maHocKy = Column(Integer, ForeignKey(HocKy.MaHocKy), nullable=False)
+    maLopHoc = Column(Integer, ForeignKey(LopHoc.MaLopHoc), nullable=False)
+    db.PrimaryKeyConstraint(maHocSinh, maHocKy, maLopHoc)
+
+    def __str__(self):
+        return self.maHocSinh
+
 
 class TaiKhoan(db.Model, UserMixin):
     __tablename__ = "TaiKhoan"
