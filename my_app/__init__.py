@@ -9,5 +9,3 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.secret_key = "lblnhtnhqnpn"
 
 db = SQLAlchemy(app=app)
-admin = Admin(app=app, name="HSSV", template_mode="bootstrap4")
-my_login = LoginManager(app=app)

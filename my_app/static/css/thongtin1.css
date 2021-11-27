@@ -78,6 +78,28 @@ label{
     border: none;
     border-radius: 0px;
 }
+
 .edit-points{
     width: 90px;
+}
+
+.inline{
+    display: flex;
+}
+
+.form-control.select{
+    width: 85%;
+}
+.form-group.inline{
+    width: 100%;
+    margin-right: 15px;
+}
+.inline .label_css{
+    display: block;
+    width: 25%;
+    margin-top: 6px;
+}
+.inline .radio_label_css{
+
+    margin-top: 6px;
 }
